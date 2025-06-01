@@ -127,7 +127,8 @@ func FetchUpstreamModels(c *gin.Context) {
 	if channel.Type == common.ChannelTypeGemini {
 		url = fmt.Sprintf("%s/v1beta/openai/models", baseURL)
 	}
-	body, err := GetResponseBody("GET", url, channel, GetAuthHeader(channel.Key))
+	key := strings.Split(channel.Key, ",")[0]
+	body, err := GetResponseBody("GET", url, channel, GetAuthHeader(key))
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
