@@ -119,6 +119,11 @@ func FetchUpstreamModels(c *gin.Context) {
 		baseURL = channel.GetBaseURL()
 	}
 	url := fmt.Sprintf("%s/v1/models", baseURL)
+
+	if strings.HasSuffix(baseURL, "/chat/completions") {
+		url = strings.TrimSuffix(baseURL, "/chat/completions") + "/models"
+	}
+
 	if channel.Type == common.ChannelTypeGemini {
 		url = fmt.Sprintf("%s/v1beta/openai/models", baseURL)
 	}
@@ -529,6 +534,10 @@ func FetchModels(c *gin.Context) {
 
 	client := &http.Client{}
 	url := fmt.Sprintf("%s/v1/models", baseURL)
+
+	if strings.HasSuffix(baseURL, "/chat/completions") {
+		url = strings.TrimSuffix(baseURL, "/chat/completions") + "/models"
+	}
 
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
